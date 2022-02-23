@@ -24,12 +24,12 @@ const contactsPersistConfig = {
   blacklist: ['filter'],
 };
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     contacts: persistReducer(contactsPersistConfig, contactsReducer),
   },
   middleware,
 });
-const persistor = persistStore(store);
+export const persistor = persistStore(store);
 
-export default { store, persistor };
+// export default { store, persistor };
