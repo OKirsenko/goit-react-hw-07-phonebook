@@ -1,15 +1,16 @@
 // import { nanoid } from 'nanoid';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contacts-actions';
+import { addContact } from '../../redux/contacts-operations';
 import { useState } from 'react';
 import s from './Form.module.css';
 
 export default function Form() {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const dispatch = useDispatch();
   const items = useSelector(state => state.contacts.items);
+  const isLoading = useSelector(state => state.contacts.isLoading);
 
   const handleChange = event => {
     const { name, value } = event.target;
@@ -17,8 +18,8 @@ export default function Form() {
       case 'name':
         setName(value);
         break;
-      case 'number':
-        setNumber(value);
+      case 'phone':
+        setPhone(value);
         break;
       default:
         return;
@@ -26,14 +27,14 @@ export default function Form() {
   };
   const clearFilds = () => {
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   const handleSubmit = event => {
     event.preventDefault();
     const newContact = {
       name,
-      number,
+      phone,
     };
 
     if (
@@ -65,22 +66,23 @@ export default function Form() {
         />
       </label>
       <label className={s.label}>
-        Number
+        Phone
         <br />
         <input
           className={s.input}
           type="tel"
-          name="number"
+          name="phone"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
-          value={number}
+          value={phone}
           onChange={handleChange}
         />
       </label>
       <button className={s.button} type="submit">
         Add contacts
       </button>
+      {isLoading && <h3>Loading...</h3>}
     </form>
   );
 }
